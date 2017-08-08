@@ -14,3 +14,14 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+ion-content {
+  background: linear-gradient(160deg, $background-color, darken($background-color, 4%))!important;
+}
+ion-header {
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+
+  &:after {
+    content: none;
+  }
+}
