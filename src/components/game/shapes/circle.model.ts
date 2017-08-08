@@ -15,6 +15,9 @@ export class Circle implements Shape {
   /* The size of each step */
   private stepSize: number;
 
+  /* Shifting of the circle for rotation */
+  private shift: number = 10;
+
   /**
    * @constructor
    *
@@ -25,7 +28,8 @@ export class Circle implements Shape {
     this.context = context;
     this.config = config;
     this.stepSize = (360 - config.gap) / this.config.steps;
-    this.draw(0, 360 - config.gap); // draw backdrop
+console.log(this.shift);
+    this.draw(this.shift, (360 - config.gap) + this.shift, true); // draw backdrop
   }
 
   /**
@@ -33,7 +37,7 @@ export class Circle implements Shape {
    */
   next() {
     if (this.step < this.config.steps) {
-      const start = this.step * this.stepSize,
+      const start = (this.step * this.stepSize) + this.shift,
             end = start + this.stepSize;
 
       this.draw(start, end);
@@ -45,16 +49,24 @@ export class Circle implements Shape {
 
   /**
    * Draw the shape.
+   *
+   * @param {number} start
+   * @param {number} end
+   * @param {boolean} outline
    */
-  draw(start: number, end: number) {
+  draw(start: number, end: number, outline: boolean = false) {
     const context = this.context,
           config = this.config;
 
     this.annulus(config.center, config.radius, config.radius+config.size, start, end);
-    context.fillStyle = config.color;
-    // context.translate(config.center, config.center);
-    // context.rotate(Math.PI / 4);
-    context.fill();
+
+    if (outline) {
+      context.fillStyle = 'rgba(255,255,255,0.2)';
+      context.fill();
+    } else {
+      context.fillStyle = config.color;
+      context.fill();
+    }
   }
 
   /**

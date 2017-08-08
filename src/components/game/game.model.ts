@@ -36,20 +36,20 @@ export class Game {
   constructor(private canvas: HTMLCanvasElement) {}
 
   /**
-   * Set-up the game.
+   * Initialize the game.
    */
-  setup() {
+  init() {
     const context = this.canvas.getContext('2d'),
           center = this.canvas.width/2;
 
     for (let i = 0; i < 4; i++) {
       const circle = new Circle(context, {
-        gap: Math.random() * 100,
-        size: 8,
-        steps: 100,
-        radius: 75 + (i * 25),
+        gap: 5 + (Math.random() * 20),
+        size: 12,
+        steps: 80,
+        radius: 75 + (i * 30),
         center: center,
-        color: 'rgba(255,255,255,0.2)'
+        color: i%2 === 0 ? 'orange' : 'green'
       });
 
       this.shapes.push(circle);

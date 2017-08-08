@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Shape } from './shapes/shape.interface';
 import { Game } from './game.model';
+import { Game2 } from './game2.model';
 
 @Component({
   selector: 'app-game',
@@ -8,17 +8,16 @@ import { Game } from './game.model';
 })
 export class GameComponent implements OnInit {
 
-  game: Game;
+  private game: Game;
 
   constructor() {}
 
   ngOnInit(){
-    const canvas = <HTMLCanvasElement> document.getElementById('canvas'),
-          game = new Game(canvas);
+    const canvas = <HTMLCanvasElement> document.getElementById('canvas');
 
-    game.setup();
-
-    this.game = game;
+    this.game = new Game(canvas);
+    this.game.init();
+    //this.game.animate();
   }
 
 }
