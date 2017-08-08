@@ -28,7 +28,7 @@ export class Circle implements Shape {
     this.context = context;
     this.config = config;
     this.stepSize = (360 - config.gap) / this.config.steps;
-console.log(this.shift);
+
     this.draw(this.shift, (360 - config.gap) + this.shift, true); // draw backdrop
   }
 
