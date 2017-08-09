@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Game } from './game.model';
-import { Game2 } from './game2.model';
+import { Circle } from './shapes/circle.model';
 
 @Component({
   selector: 'app-game',
@@ -8,16 +8,17 @@ import { Game2 } from './game2.model';
 })
 export class GameComponent implements OnInit {
 
+  @ViewChild('svg') svg: ElementRef;
+
   private game: Game;
 
   constructor() {}
 
   ngOnInit(){
-    const canvas = <HTMLCanvasElement> document.getElementById('canvas');
+    // const controller = new GameController;
 
-    this.game = new Game(canvas);
+    this.game = new Game(this.svg.nativeElement);
     this.game.init();
-    //this.game.animate();
   }
 
 }
