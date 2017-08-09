@@ -19,9 +19,8 @@ export class Circle extends Shape {
   /**
    * Create the shape.
    *
-   * We create the donut effect by using the stroke-dasharray and dashoffset
-   * properties. See https://codepen.io/pietropizzi/pen/ohnyb for a demo and
-   * check out http://css-tricks.com/svg-line-animation-works for more info.
+   * The donut effect is created by applying SVG
+   * stroke-properties to the circle element.
    */
   create() {
     this.dashArray = (Math.round(2 * Math.PI * this.config.radius) + 1) * 0.75;
@@ -77,6 +76,11 @@ export class Circle extends Shape {
 
   /**
    * Fill the shape.
+   *
+   * The stroke-dasharray and dashoffset properties are
+   * used to fill the circle's stroke (donut). Check out
+   * codepen.io/pietropizzi/pen/ohnyb and the 'SVG line
+   * animation article on CSS-Tricks.
    */
   fill(percentage: number, increments: boolean = true) {
     percentage = increments ? this.filled += percentage : percentage;
@@ -90,28 +94,31 @@ export class Circle extends Shape {
   /**
    * Draw annulus.
    *
+   * We use the annulus to create a clip (mask) for the SVG donut
+   *
    * @see https://stackoverflow.com/questions/11479185/svg-donut-slice-as-path-element-annular-sector
    *
    * @return {string}
    */
   private annularSector(options: any) {
-    var opts: any = optionsWithDefaults(options);
-    var p = [ // points
+    let opts: any = optionsWithDefaults(options);
+
+    const p = [ // points
       [opts.cx + opts.r2*Math.cos(opts.startRadians), opts.cy + opts.r2*Math.sin(opts.startRadians)],
       [opts.cx + opts.r2*Math.cos(opts.closeRadians), opts.cy + opts.r2*Math.sin(opts.closeRadians)],
       [opts.cx + opts.r1*Math.cos(opts.closeRadians), opts.cy + opts.r1*Math.sin(opts.closeRadians)],
       [opts.cx + opts.r1*Math.cos(opts.startRadians), opts.cy + opts.r1*Math.sin(opts.startRadians)],
     ];
 
-    var angleDiff = opts.closeRadians - opts.startRadians;
-    var largeArc = (angleDiff % (Math.PI*2)) > Math.PI ? 1 : 0;
-    var cmds = [];
+    const angleDiff = opts.closeRadians - opts.startRadians;
+    const largeArc = (angleDiff % (Math.PI*2)) > Math.PI ? 1 : 0;
+    const cmds = [];
 
     cmds.push("M"+p[0].join());                                // Move to P0
     cmds.push("A"+[opts.r2,opts.r2,0,largeArc,1,p[1]].join()); // Arc to  P1
     cmds.push("L"+p[2].join());                                // Line to P2
     cmds.push("A"+[opts.r1,opts.r1,0,largeArc,0,p[3]].join()); // Arc to  P3
-    cmds.push("z");                                // Close path (Line to P0)
+    cmds.push("z");                                            // Close path (Line to P0)
 
     return cmds.join(' ');
 
