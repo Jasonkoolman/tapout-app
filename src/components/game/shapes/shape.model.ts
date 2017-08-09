@@ -33,7 +33,7 @@ export abstract class Shape {
    *
    * @return {SVGElement}
    */
-  protected createElement(name: string, attributes: any): SVGElement {
+  protected createElement(name: string, attributes: any = {}): SVGElement {
     const circle = document.createElementNS('http://www.w3.org/2000/svg', name);
 
     for (let attr in attributes) {
@@ -42,7 +42,7 @@ export abstract class Shape {
       }
     }
 
-    this.svg.appendChild(circle);
+
 
     return circle;
   }

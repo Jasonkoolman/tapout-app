@@ -42,16 +42,6 @@ export class Game {
    * Initialize the game.
    */
   init() {
-    const circle2 = new Circle(this.svg, {
-      size: 10,
-      radius: 80,
-      gutter: 30,
-      fillColor: 'yellow',
-      trackColor: 'rgba(255,255,255,0.2)'
-    });
-
-    circle2.create();
-
     const circle = new Circle(this.svg, {
       size: 10,
       radius: 60,
