@@ -3,13 +3,16 @@ import { ShapeConfig } from './shape-config.interface'
 
 export class Circle extends Shape {
 
+  /* Whether the circle is resumed filling */
+  public refill: boolean = false;
+
   /* The circle's current degrees */
   protected degrees = {
-    tail: 0,   // current tail
-    head: 0,   // current head
-    fhead: 0,   // following head
-    total: 0,  // total degrees of the circle
-    covered: 0 // total degrees covered
+    tail: 0,    // tail of fill path
+    head: 0,    // head of fill path
+    fhead: 0,   // head of following path
+    total: 0,   // total degrees of the circle
+    covered: 0  // total degrees covered
   };
 
   /* The circle's track degrees */
@@ -42,20 +45,32 @@ export class Circle extends Shape {
    * Fill the shape.
    *
    * @param {number} degrees
+   * @param {boolean} resumed
    */
-  fill(degrees: number) {
-    if (!this.elements.path) {
+  fill(degrees: number, resumed: boolean = false) {
+    if (this.refill) {
+      this.elements.fillPath = null; // forces a new fill path to be created
+      this.degrees.head = this.degrees.fhead; // reset tail to follow path
+      this.degrees.tail = this.degrees.fhead; // reset head to follow path
+      this.refill = false;
+    }
+
+    if (!this.elements.fillPath) {
       this.createFillPath();
     }
 
     this.degrees.head += degrees;
     this.degrees.covered += degrees;
 
+    console.log(this.degrees);
+
+    if (this.hasCollision()) {
+      this.onCollision.emit(this);
+    }
+
     this.elements.fillPath.setAttributeNS(null, 'd', // update coordinates
       this.getAnnularCoordinates(this.degrees.tail, this.degrees.head)
     );
-
-    console.log(this.degrees, this.isOffTrack());
   }
 
   /**
@@ -64,7 +79,7 @@ export class Circle extends Shape {
   follow(degrees:  number) {
     this.degrees.fhead += degrees;
 
-    if (this.degrees.fhead > this.track[this.track.length - 1][1]) {
+    if (this.degrees.fhead > this.track[this.track.length - 1][1] && !this.hasCollision()) {
       this.onCompleted.emit(this);
     }
 
@@ -78,7 +93,7 @@ export class Circle extends Shape {
    *
    * @returns {boolean}
    */
-  isOffTrack(): boolean {
+  hasCollision(): boolean {
     let result = true;
 
     this.track.forEach((degrees) => {
@@ -95,10 +110,8 @@ export class Circle extends Shape {
    *
    * @returns {number}
    */
-  getCoverage(): number {
-    return parseInt(
-      (this.degrees.covered / this.degrees.total).toFixed(2)
-    );
+  getCoverage(): string {
+    return (this.degrees.covered / this.degrees.total * 100).toPrecision(4);
   }
 
   /**

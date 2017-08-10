@@ -86,13 +86,23 @@ export class Game {
       });
     }, 1000/this.fps);
 
-    this.activeCircle.onCompleted.subscribe(() => {
-      console.log('GOT ITTTTTT COMPLETE');
+    this.activeCircle.onCompleted.subscribe((shape: Shape) => {
+      console.log('SHAPE COMPLETE WITH COVERAGE: ', shape.getCoverage());
       clearInterval(this.interval);
+    });
+
+    this.activeCircle.onCollision.subscribe((shape: Shape) => {
+      console.log('SHAPE COLLISION DETECTED');
+      clearInterval(this.interval);
+      shape.elements.group.setAttributeNS(null, 'class', 'gone');
     });
 
     this.svg.onmousedown = () =>  {
       this.filling = false;
+    };
+    this.svg.onmouseup = () =>  {
+      this.filling = true;
+      this.activeCircle.refill = true;
     };
   }
 

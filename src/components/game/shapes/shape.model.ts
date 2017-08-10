@@ -10,10 +10,13 @@ export abstract class Shape {
   protected config: ShapeConfig;
 
   /* The shape's SVG elements */
-  protected elements: {[key: string]: SVGElement} = {};
+  public elements: {[key: string]: SVGElement} = {};
 
   /* Fired when a shape is completed */
   public onCompleted: EventEmitter<Shape> = new EventEmitter();
+
+  /* Fired the filled shape is off track */
+  public onCollision: EventEmitter<Shape> = new EventEmitter();
 
   /**
    * @constructor
@@ -25,6 +28,32 @@ export abstract class Shape {
     this.svg = svg;
     this.config = config;
   }
+
+  /**
+   * Create the shape.
+   */
+  public abstract create();
+
+  /**
+   * Fill the shape.
+   *
+   * @param {number} percentage
+   */
+  public abstract fill(percentage: number);
+
+  /**
+   * Check whether the filled shape is off track.
+   *
+   * @returns {boolean}
+   */
+  public abstract hasCollision(): boolean;
+
+  /**
+   * Get the shape's coverage percentage.
+   *
+   * @returns {boolean}
+   */
+  public abstract getCoverage(): string;
 
   /**
    * Create an svg element.
@@ -45,31 +74,5 @@ export abstract class Shape {
 
     return elem;
   }
-
-  /**
-   * Create the shape.
-   */
-  public abstract create();
-
-  /**
-   * Fill the shape.
-   *
-   * @param {number} percentage
-   */
-  public abstract fill(percentage: number);
-
-  /**
-   * Check whether the filled shape is off track.
-   *
-   * @returns {boolean}
-   */
-  public abstract isOffTrack(): boolean;
-
-  /**
-   * Get the shape's coverage percentage.
-   *
-   * @returns {boolean}
-   */
-  public abstract getCoverage(): number;
 
 }

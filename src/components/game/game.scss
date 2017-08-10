@@ -6,6 +6,14 @@
     max-width: 100%;
     height: auto;
     margin: 0 auto;
+
+    > g {
+      &.gone {
+        transform: scale(0) rotate(360deg);
+        transform-origin: 200px 200px;
+        transition: all 600ms ease;
+      }
+    }
   }
 }
 #game-status {
