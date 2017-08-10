@@ -1,6 +1,7 @@
 import { Shape } from './shapes/shape.model';
 import { Circle } from './shapes/circle.model';
 import { EventEmitter } from '@angular/core';
+import { ShapeRepository } from './shapes/shape.repository';
 
 export class Game {
 

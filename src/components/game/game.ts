@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Game } from './game.model';
-import { Circle } from './shapes/circle.model';
 
 @Component({
   selector: 'app-game',

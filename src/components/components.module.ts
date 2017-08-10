@@ -5,6 +5,6 @@ import { IonicModule } from 'ionic-angular';
 @NgModule({
 	declarations: [GameComponent],
 	imports: [IonicModule],
-	exports: [GameComponent]
+	exports: [GameComponent],
 })
 export class ComponentsModule {}

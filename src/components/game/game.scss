@@ -8,10 +8,11 @@
     margin: 0 auto;
 
     > g {
+      transform-origin: 200px 200px;
+      transition: all 800ms ease-in-out;
+
       &.gone {
         transform: scale(0) rotate(360deg);
-        transform-origin: 200px 200px;
-        transition: all 600ms ease;
       }
     }
   }
