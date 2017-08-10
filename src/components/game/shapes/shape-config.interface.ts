@@ -6,19 +6,22 @@ export interface ShapeConfig {
   /* Y position of the shape */
   y: number;
 
-  /* Size of the shape */
+  /* Size (thickness) of the shape */
   size: number;
 
   /* Radius of the shape */
   radius: number;
 
-  /* Gutter of the shape */
-  gutter: number;
+  /* Total shape gutters */
+  gutters: number;
 
-  /* Color of the shape's coverage */
+  /* Color of the shape's fill path */
   fillColor: string;
 
-  /* Color of the shape's track */
+  /* Color of the shape's track path */
   trackColor: string;
+
+  /* Color of the shape's follow path */
+  followColor: string;
 
 }

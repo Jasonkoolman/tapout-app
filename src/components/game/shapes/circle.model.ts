@@ -5,13 +5,17 @@ export class Circle extends Shape {
 
   /* The circle's current degrees */
   protected degrees = {
-    tail: 0,
-    head: 0,
+    tail: 0,   // current tail
+    head: 0,   // current head
+    fhead: 0,   // following head
+    total: 0,  // total degrees of the circle
+    covered: 0 // total degrees covered
   };
 
   /* The circle's track degrees */
   protected track: Array<[number, number]> = [
-    [0, 270]
+    [0, 40],
+    [60, 270]
   ];
 
   /**
@@ -28,8 +32,9 @@ export class Circle extends Shape {
    * Create the shape.
    */
   create() {
-    this.elements.group = this.createElement('g');
+    this.elements.group = Shape.createElement('g');
     this.createTrackPath();
+    this.createFollowPath();
     this.svg.appendChild(this.elements.group);
   }
 
@@ -39,54 +44,41 @@ export class Circle extends Shape {
    * @param {number} degrees
    */
   fill(degrees: number) {
-    const config = this.config;
-
     if (!this.elements.path) {
       this.createFillPath();
     }
 
-    this.coverage += (degrees / 360) * 100;
     this.degrees.head += degrees;
+    this.degrees.covered += degrees;
 
-    this.elements.path.setAttributeNS(null, 'd', // update path coordinates
+    this.elements.fillPath.setAttributeNS(null, 'd', // update coordinates
       this.getAnnularCoordinates(this.degrees.tail, this.degrees.head)
     );
 
-    console.log(this.coverage + '%' , this.degrees.head, this.isOffTrack());
+    console.log(this.degrees, this.isOffTrack());
   }
 
   /**
-   * Create the track path.
+   * Follow the shape.
    */
-  private createTrackPath() {
-    this.track.forEach((degrees) => {
-      const annular = this.createElement('path', {
-        d: this.getAnnularCoordinates(degrees[0], degrees[1])
-      });
+  follow(degrees:  number) {
+    this.degrees.fhead += degrees;
 
-      this.elements.group.appendChild(annular);
-    });
+    if (this.degrees.fhead > this.track[this.track.length - 1][1]) {
+      this.onCompleted.emit(this);
+    }
+
+    this.elements.followPath.setAttributeNS(null, 'd', // update coordinates
+      this.getAnnularCoordinates(0, this.degrees.fhead)
+    );
   }
 
   /**
-   * Create and assign a (new) fill path.
-   */
-  private createFillPath() {
-    const path = this.createElement('path', {
-      d: this.getAnnularCoordinates(this.degrees.tail, this.degrees.head),
-      fill: this.config.fillColor
-    });
-
-    this.elements.path = path; // store new path
-    this.elements.group.appendChild(path); // append to group
-  }
-
-  /**
-   * Check whether the covered circle is off track.
+   * Check whether the filled shape is off track.
    *
    * @returns {boolean}
    */
-  private isOffTrack(): boolean {
+  isOffTrack(): boolean {
     let result = true;
 
     this.track.forEach((degrees) => {
@@ -99,20 +91,72 @@ export class Circle extends Shape {
   }
 
   /**
-   * Get the path coordinates to draw an annulus.
-   * All credits go to Phrogz from StackOverflow.
+   * Get the shape's coverage percentage.
+   *
+   * @returns {number}
+   */
+  getCoverage(): number {
+    return parseInt(
+      (this.degrees.covered / this.degrees.total).toFixed(2)
+    );
+  }
+
+  /**
+   * Create the track path.
+   */
+  private createTrackPath() {
+    this.track.forEach((degrees) => {
+      const path = Shape.createElement('path', {
+        d: this.getAnnularCoordinates(degrees[0], degrees[1]),
+        fill: this.config.trackColor
+      });
+
+      this.degrees.total += degrees[1] - degrees[0]; // add up difference to total degrees
+      this.elements.group.appendChild(path); // append to group
+    });
+  }
+
+  /**
+   * Create the follow path.
+   */
+  private createFollowPath() {
+    const path = Shape.createElement('path', {
+      d: this.getAnnularCoordinates(this.degrees.tail, this.degrees.head),
+      fill: this.config.followColor
+    });
+
+    this.elements.followPath = path; // store new path
+    this.elements.group.appendChild(path); // append to group
+  }
+
+  /**
+   * Create and assign a (new) fill path.
+   */
+  private createFillPath() {
+    const path = Shape.createElement('path', {
+      d: this.getAnnularCoordinates(this.degrees.tail, this.degrees.head),
+      fill: this.config.fillColor
+    });
+
+    this.elements.fillPath = path; // store new path
+    this.elements.group.appendChild(path); // append to group
+  }
+
+  /**
+   * Get the path coordinates to draw an annulus based on the circle's
+   * configuration. All credits go to Phrogz from StackOverflow.
    *
    * @see https://stackoverflow.com/questions/11479185
    *
    * @param {number} startDegrees
    * @param {number} endDegrees
    *
-   * @return {string}
+   * @returns {string}
    */
   private getAnnularCoordinates(startDegrees: number, endDegrees: number): string {
     const config = this.config;
 
-    let opts: any = {
+    let opts = {
       cx: config.x,                     // center x
       cy: config.y,                     // center y
       r1: config.radius,                // inner radius

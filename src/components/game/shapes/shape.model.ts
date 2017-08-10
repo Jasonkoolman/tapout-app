@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { ShapeConfig } from './shape-config.interface';
 
 export abstract class Shape {
@@ -11,15 +12,14 @@ export abstract class Shape {
   /* The shape's SVG elements */
   protected elements: {[key: string]: SVGElement} = {};
 
-  /* Percentage of the shape covered */
-  protected coverage: number = 0;
-
+  /* Fired when a shape is completed */
+  public onCompleted: EventEmitter<Shape> = new EventEmitter();
 
   /**
    * @constructor
    *
    * @param {SVGElement} svg
-   * @param {any} config
+   * @param {ShapeConfig} config
    */
   constructor(svg: SVGElement, config: ShapeConfig) {
     this.svg = svg;
@@ -32,9 +32,9 @@ export abstract class Shape {
    * @param {string} name
    * @param {any} attributes
    *
-   * @return {SVGElement}
+   * @returns {SVGElement}
    */
-  protected createElement(name: string, attributes: any = {}): SVGElement {
+  static createElement(name: string, attributes: any = {}): SVGElement {
     const elem = document.createElementNS('http://www.w3.org/2000/svg', name);
 
     for (let attr in attributes) {
@@ -49,11 +49,27 @@ export abstract class Shape {
   /**
    * Create the shape.
    */
-  public abstract create(): void;
+  public abstract create();
 
   /**
-   * Fill the shape incremental.
+   * Fill the shape.
+   *
+   * @param {number} percentage
    */
-  public abstract fill(percentage: number): void;
+  public abstract fill(percentage: number);
+
+  /**
+   * Check whether the filled shape is off track.
+   *
+   * @returns {boolean}
+   */
+  public abstract isOffTrack(): boolean;
+
+  /**
+   * Get the shape's coverage percentage.
+   *
+   * @returns {boolean}
+   */
+  public abstract getCoverage(): number;
 
 }

@@ -7,11 +7,19 @@ export class Game {
   /* Whether the game started */
   public started: boolean;
 
+  /* Number of frames per second */
+  private fps: number = 60;
+
   /* Interval timer */
-  private timer: any;
+  private interval: any;
 
   /* The game score */
   private score: number;
+
+  /* Whether the player is filling the shape */
+  private filling: boolean;
+
+  private activeCircle: Circle;
 
   // /* Called when a shape is completed */
   // public shapeCompleted: EventEmitter<Shape> = new EventEmitter();
@@ -42,29 +50,49 @@ export class Game {
    * Initialize the game.
    */
   init() {
-    const circle = new Circle(this.svg, {
+    const center = {
       x: parseInt(this.svg.getAttribute('width')) / 2,
       y: parseInt(this.svg.getAttribute('height')) / 2,
+    };
+
+    const circle = new Circle(this.svg, {
+      x: center.x,
+      y: center.y,
       size: 10,
       radius: 60,
-      gutter: 10,
+      gutters: 1,
       fillColor: 'red',
-      trackColor: 'rgba(255,255,255,0.2)'
+      trackColor: 'rgba(255,255,255,0.2)',
+      followColor: 'rgba(22,29,53,0.2)'
     });
 
     circle.create();
 
+    this.activeCircle = circle;
+  }
+
+  /**
+   * Start the game.
+   */
+  start() {
+    this.started = true;
+    this.filling = true;
+    this.interval = setInterval(() => {
+      requestAnimationFrame(() => {
+        if (this.filling) {
+          this.activeCircle.fill(1);
+        }
+        this.activeCircle.follow(1);
+      });
+    }, 1000/this.fps);
+
+    this.activeCircle.onCompleted.subscribe(() => {
+      console.log('GOT ITTTTTT COMPLETE');
+      clearInterval(this.interval);
+    });
+
     this.svg.onmousedown = () =>  {
-      this.started = true;
-      this.timer = setInterval(() => {
-        requestAnimationFrame(() => circle.fill(1));
-      }, 1000/60);
-    };
-    this.svg.onmouseup = () => {
-      if (this.started) {
-        this.started = false;
-        clearInterval(this.timer);
-      }
+      this.filling = false;
     };
   }
 

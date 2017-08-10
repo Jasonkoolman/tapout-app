@@ -19,6 +19,12 @@ export class GameComponent implements OnInit {
 
     this.game = new Game(this.svg.nativeElement);
     this.game.init();
+
+    window.addEventListener('keyup', (e) => {
+      if (e.keyCode === 38 && !this.game.started) {
+        this.game.start();
+      }
+    })
   }
 
 }
