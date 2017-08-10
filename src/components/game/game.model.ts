@@ -1,6 +1,7 @@
 import { Shape } from './shapes/shape.model';
 import { ShapeService } from "./shapes/shape.service";
 import {EventEmitter} from "@angular/core";
+import {Subscriber} from "rxjs/Subscriber";
 
 export class Game {
 
@@ -18,6 +19,9 @@ export class Game {
 
   /* Interval timer */
   private interval: number;
+
+  /* Any event subscriptions made */
+  private subscriptions: Array<Subscriber<any>> = [];
 
   /* The active shape, which the player is filling */
   private shape: Shape;
@@ -51,39 +55,47 @@ export class Game {
     this.interval = this.loop();
     this.subscribe();
 
-    this.svg.onmousedown = () =>  {
+    this.svg.addEventListener('mousedown', () =>  {
       this.filling = false;
-    };
-    this.svg.onmouseup = () =>  {
+      console.log('@@@@ MOUSE DOWN');
+    });
+    this.svg.addEventListener('mouseup', () =>  {
       this.filling = true;
       this.shape.refill = true;
-    };
+      console.log('@@@@ MOUSE UP');
+    });
   }
 
   /**
    * Subscribe event handlers to the shape.
    */
   subscribe() {
-    this.shape.onCollision.subscribe((shape: Shape) => {
+    const onCollision = this.shape.onCollision.subscribe((shape: Shape) => {
       console.log('SHAPE COLLISION.');
       shape.elements.group.setAttributeNS(null, 'class', 'gone');
       this.next();
     });
-    this.shape.onCompleted.subscribe((shape: Shape) => {
+
+    const onCompleted = this.shape.onCompleted.subscribe((shape: Shape) => {
       console.log('SHAPE COMPLETED. COVERAGE: ', shape.getCoverage());
       this.next();
     });
+
+    this.subscriptions.push(onCollision, onCompleted);
   }
 
   /**
    * Assign a new shape to fill.
    */
   next() {
+    clearInterval(this.interval);
+
     if ( ! this.shapeService.assign()) {
+      console.log('END');
       return this.end();
     }
 
-    clearInterval(this.interval);
+    console.log('NEXT');
     this.shape = this.shapeService.active();
     this.interval = this.loop();
     this.subscribe();
@@ -93,7 +105,9 @@ export class Game {
    * End the game.
    */
   end() {
-    clearInterval(this.interval);
+    this.subscriptions.forEach(sub => sub.unsubscribe()); // unsubscribe
+    this.svg.removeEventListener('mousedown'); // remove listeners
+    this.svg.removeEventListener('mouseup');
     this.running = false;
     this.onEnd.emit(this);
     console.log('GAME END');
