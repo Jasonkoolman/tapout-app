@@ -14,7 +14,7 @@ export class Circle extends Shape {
 
   /* The circle's track degrees */
   protected track: Array<[number, number]> = [
-    [0, 50]
+    [0, 350]
   ];
 
   /**

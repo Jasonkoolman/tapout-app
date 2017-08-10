@@ -88,15 +88,13 @@ export class Game {
   next() {
     clearInterval(this.interval);
 
-    if ( ! this.shapeService.assign()) {
-      console.log('END');
-      return this.end();
+    if (this.shapeService.assign()) {
+      this.shape = this.shapeService.active();
+      this.interval = this.loop();
+      this.subscribe();
+    } else {
+      this.end();
     }
-
-    console.log('NEXT');
-    this.shape = this.shapeService.active();
-    this.interval = this.loop();
-    this.subscribe();
   }
 
   /**

@@ -1,5 +1,6 @@
 #game-wrap {
   position: relative;
+  text-align: center;
 
   > svg {
     display: block;
@@ -9,17 +10,33 @@
 
     > g {
       transform-origin: 200px 200px;
-      transition: all 800ms ease-in-out;
+      //transition: all 800ms ease-in-out;
 
       &.gone {
-        transform: scale(0) rotate(360deg);
+        transform: scale(0.5) rotate(360deg);
+        opacity: 0;
       }
     }
   }
 }
+
 #game-status {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+}
+
+#game-trigger {
+  font-size: 6rem;
+  background-color: rgba(0,0,0,0.4);
+  padding: 1rem;
+  opacity: 0.5;
+  border: 3px solid #FFF;
+  border-radius: 6rem;
+  transition: all 280ms ease;
+
+  &.active {
+    opacity: 0.8;
+  }
 }
