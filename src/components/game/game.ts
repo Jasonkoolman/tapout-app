@@ -27,4 +27,8 @@ export class GameComponent implements OnInit {
     })
   }
 
+  onTap() {
+    console.log('TAPPED');
+  }
+
 }
