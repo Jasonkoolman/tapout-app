@@ -3,9 +3,6 @@ import { ShapeConfig } from './shape-config.interface'
 
 export class Circle extends Shape {
 
-  /* Whether the circle is resumed filling */
-  public refill: boolean = false;
-
   /* The circle's current degrees */
   protected degrees = {
     tail: 0,    // tail of fill path
@@ -17,8 +14,7 @@ export class Circle extends Shape {
 
   /* The circle's track degrees */
   protected track: Array<[number, number]> = [
-    [0, 40],
-    [60, 270]
+    [0, 140]
   ];
 
   /**
@@ -38,6 +34,7 @@ export class Circle extends Shape {
     this.elements.group = Shape.createElement('g');
     this.createTrackPath();
     this.createFollowPath();
+    this.createFillPath();
     this.svg.appendChild(this.elements.group);
   }
 
@@ -45,64 +42,44 @@ export class Circle extends Shape {
    * Fill the shape.
    *
    * @param {number} degrees
-   * @param {boolean} resumed
    */
-  fill(degrees: number, resumed: boolean = false) {
+  fill(degrees: number = 1) {
     if (this.refill) {
-      this.elements.fillPath = null; // forces a new fill path to be created
-      this.degrees.head = this.degrees.fhead; // reset tail to follow path
-      this.degrees.tail = this.degrees.fhead; // reset head to follow path
+      this.degrees.head = this.degrees.fhead; // reset head to follow path
+      this.degrees.tail = this.degrees.fhead; // reset tail to follow path
       this.refill = false;
-    }
-
-    if (!this.elements.fillPath) {
       this.createFillPath();
     }
 
     this.degrees.head += degrees;
     this.degrees.covered += degrees;
 
-    console.log(this.degrees);
-
     if (this.hasCollision()) {
-      this.onCollision.emit(this);
+      this.onCollision.emit(this); // completed TODO: FIX BUG WHERE COLLISIONS ARE NOT REGISTERED
+    } else {
+      this.elements.fillPath.setAttributeNS(null, 'd', // update coordinates
+        this.getAnnularCoordinates(this.degrees.tail, this.degrees.head)
+      );
     }
-
-    this.elements.fillPath.setAttributeNS(null, 'd', // update coordinates
-      this.getAnnularCoordinates(this.degrees.tail, this.degrees.head)
-    );
   }
 
   /**
    * Follow the shape.
+   *
+   * @param {number} degrees
    */
-  follow(degrees:  number) {
+  follow(degrees: number = 1) {
     this.degrees.fhead += degrees;
 
-    if (this.degrees.fhead > this.track[this.track.length - 1][1] && !this.hasCollision()) {
+    console.log(this.degrees);
+
+    if (this.degrees.fhead > this.track[this.track.length - 1][1]) {
       this.onCompleted.emit(this);
+    } else {
+      this.elements.followPath.setAttributeNS(null, 'd', // update coordinates
+        this.getAnnularCoordinates(0, this.degrees.fhead)
+      );
     }
-
-    this.elements.followPath.setAttributeNS(null, 'd', // update coordinates
-      this.getAnnularCoordinates(0, this.degrees.fhead)
-    );
-  }
-
-  /**
-   * Check whether the filled shape is off track.
-   *
-   * @returns {boolean}
-   */
-  hasCollision(): boolean {
-    let result = true;
-
-    this.track.forEach((degrees) => {
-      if (this.degrees.tail >= degrees[0] && this.degrees.head <= degrees[1]) {
-        return result = false;
-      }
-    });
-
-    return result;
   }
 
   /**
@@ -112,6 +89,23 @@ export class Circle extends Shape {
    */
   getCoverage(): string {
     return (this.degrees.covered / this.degrees.total * 100).toPrecision(4);
+  }
+
+  /**
+   * Check whether the filled shape is off track.
+   *
+   * @returns {boolean}
+   */
+  protected hasCollision(): boolean {
+    let result = true;
+
+    this.track.forEach((degrees) => {
+      if (this.degrees.tail >= degrees[0] && this.degrees.head <= degrees[1]) {
+        return result = false;
+      }
+    });
+
+    return result;
   }
 
   /**

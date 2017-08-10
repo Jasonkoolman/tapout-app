@@ -6,8 +6,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { App } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ComponentsModule} from '../components/components.module'
-import { ShapeRepository } from '../components/game/shapes/shape.repository';
+import { ComponentsModule} from '../components/components.module';
+import { ShapeService } from "../components/game/shapes/shape.service"
 
 @NgModule({
   declarations: [
@@ -27,6 +27,7 @@ import { ShapeRepository } from '../components/game/shapes/shape.repository';
   providers: [
     StatusBar,
     SplashScreen,
+    ShapeService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]
 })

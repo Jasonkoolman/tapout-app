@@ -12,6 +12,9 @@ export abstract class Shape {
   /* The shape's SVG elements */
   public elements: {[key: string]: SVGElement} = {};
 
+  /* Indicates whether the shape is refilled */
+  public refill: boolean = false;
+
   /* Fired when a shape is completed */
   public onCompleted: EventEmitter<Shape> = new EventEmitter();
 
@@ -37,16 +40,16 @@ export abstract class Shape {
   /**
    * Fill the shape.
    *
-   * @param {number} percentage
+   * @param {number} degrees
    */
-  public abstract fill(percentage: number);
+  public abstract fill(degrees?: number);
 
   /**
-   * Check whether the filled shape is off track.
+   * Follow the shape.
    *
-   * @returns {boolean}
+   * @param {number} degrees
    */
-  public abstract hasCollision(): boolean;
+  public abstract follow(degrees?: number);
 
   /**
    * Get the shape's coverage percentage.
@@ -54,6 +57,13 @@ export abstract class Shape {
    * @returns {boolean}
    */
   public abstract getCoverage(): string;
+
+  /**
+   * Check whether the filled shape is off track.
+   *
+   * @returns {boolean}
+   */
+  protected abstract hasCollision(): boolean;
 
   /**
    * Create an svg element.
