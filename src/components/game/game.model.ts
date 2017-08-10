@@ -55,15 +55,13 @@ export class Game {
     this.interval = this.loop();
     this.subscribe();
 
-    this.svg.addEventListener('mousedown', () =>  {
+    this.svg.onmousedown = () =>  {
       this.filling = false;
-      console.log('@@@@ MOUSE DOWN');
-    });
-    this.svg.addEventListener('mouseup', () =>  {
+    };
+    this.svg.onmouseup = () =>  {
       this.filling = true;
       this.shape.refill = true;
-      console.log('@@@@ MOUSE UP');
-    });
+    };
   }
 
   /**
@@ -106,8 +104,8 @@ export class Game {
    */
   end() {
     this.subscriptions.forEach(sub => sub.unsubscribe()); // unsubscribe
-    this.svg.removeEventListener('mousedown'); // remove listeners
-    this.svg.removeEventListener('mouseup');
+    this.svg.onmouseup = null; // remove event listeners
+    this.svg.onmousedown = null;
     this.running = false;
     this.onEnd.emit(this);
     console.log('GAME END');
