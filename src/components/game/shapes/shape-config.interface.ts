@@ -1,5 +1,11 @@
 export interface ShapeConfig {
 
+  /* X position of the shape */
+  x: number;
+
+  /* Y position of the shape */
+  y: number;
+
   /* Size of the shape */
   size: number;
 
@@ -9,10 +15,10 @@ export interface ShapeConfig {
   /* Gutter of the shape */
   gutter: number;
 
-  /* Center position of the shape */
+  /* Color of the shape's coverage */
   fillColor: string;
 
-  /* Color of the shape */
+  /* Color of the shape's track */
   trackColor: string;
 
 }

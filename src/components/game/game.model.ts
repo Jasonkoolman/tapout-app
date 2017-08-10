@@ -43,6 +43,8 @@ export class Game {
    */
   init() {
     const circle = new Circle(this.svg, {
+      x: parseInt(this.svg.getAttribute('width')) / 2,
+      y: parseInt(this.svg.getAttribute('height')) / 2,
       size: 10,
       radius: 60,
       gutter: 10,
@@ -54,7 +56,9 @@ export class Game {
 
     this.svg.onmousedown = () =>  {
       this.started = true;
-      this.timer = setInterval(() => circle.fill(1.25), 1000/60);
+      this.timer = setInterval(() => {
+        requestAnimationFrame(() => circle.fill(1));
+      }, 1000/60);
     };
     this.svg.onmouseup = () => {
       if (this.started) {

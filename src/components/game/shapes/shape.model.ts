@@ -8,11 +8,12 @@ export abstract class Shape {
   /* The shape's configuration */
   protected config: ShapeConfig;
 
-  /* The shape's main element */
-  protected element: SVGElement;
+  /* The shape's SVG elements */
+  protected elements: {[key: string]: SVGElement} = {};
 
-  /* The fill percentage */
-  protected filled: number = 0;
+  /* Percentage of the shape covered */
+  protected coverage: number = 0;
+
 
   /**
    * @constructor
@@ -34,17 +35,15 @@ export abstract class Shape {
    * @return {SVGElement}
    */
   protected createElement(name: string, attributes: any = {}): SVGElement {
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', name);
+    const elem = document.createElementNS('http://www.w3.org/2000/svg', name);
 
     for (let attr in attributes) {
       if (attributes.hasOwnProperty(attr)) {
-        circle.setAttributeNS(null, attr, attributes[attr]);
+        elem.setAttributeNS(null, attr, attributes[attr]);
       }
     }
 
-
-
-    return circle;
+    return elem;
   }
 
   /**
@@ -53,8 +52,8 @@ export abstract class Shape {
   public abstract create(): void;
 
   /**
-   * Fill the shape.
+   * Fill the shape incremental.
    */
-  public abstract fill(percentage: number, increments: boolean): void;
+  public abstract fill(percentage: number): void;
 
 }

@@ -7,7 +7,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ComponentsModule} from '../components/components.module'
-import { ShapeProvider } from '../providers/shape/shape';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,6 @@ import { ShapeProvider } from '../providers/shape/shape';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ShapeProvider
   ]
 })
 export class AppModule {}
