@@ -54,14 +54,21 @@ export class Game {
     this.filling = true;
     this.interval = this.loop();
     this.subscribe();
+  }
 
-    this.svg.onmousedown = () =>  {
-      this.filling = false;
-    };
-    this.svg.onmouseup = () =>  {
-      this.filling = true;
-      this.shape.refill = true;
-    };
+  /**
+   * Stop filling.
+   */
+  stopFill() {
+    this.filling = false;
+  }
+
+  /**
+   * Start (re)filling.
+   */
+  startFill() {
+    this.filling = true;
+    this.shape.refill = true;
   }
 
   /**
@@ -70,7 +77,7 @@ export class Game {
   subscribe() {
     const onCollision = this.shape.onCollision.subscribe((shape: Shape) => {
       console.log('SHAPE COLLISION.');
-      shape.elements.group.setAttributeNS(null, 'class', 'gone');
+      shape.elements.group.setAttributeNS(null, 'class', 'collision');
       this.next();
     });
 
@@ -101,9 +108,7 @@ export class Game {
    * End the game.
    */
   end() {
-    this.subscriptions.forEach(sub => sub.unsubscribe()); // unsubscribe
-    this.svg.onmouseup = null; // remove event listeners
-    this.svg.onmousedown = null;
+    this.subscriptions.forEach(sub => sub.unsubscribe());
     this.running = false;
     this.onEnd.emit(this);
     console.log('GAME END');

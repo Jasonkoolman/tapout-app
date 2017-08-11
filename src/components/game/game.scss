@@ -10,10 +10,10 @@
 
     > g {
       transform-origin: 200px 200px;
-      //transition: all 800ms ease-in-out;
+      transition: all 800ms ease-in-out;
 
-      &.gone {
-        transform: scale(0.5) rotate(360deg);
+      &.collision {
+        transform: rotate(360deg);
         opacity: 0;
       }
     }
@@ -29,14 +29,20 @@
 
 #game-trigger {
   margin-top: 1rem;
-  font-size: 6rem;
-  background-color: rgba(0,0,0,0.4);
-  padding: 1rem;
+  border: 0;
+  color: #FFF;
   opacity: 0.5;
-  border: 3px solid #FFF;
-  border-radius: 6rem;
-  transition: all 280ms ease;
+  background: transparent;
+  transition: opacity 280ms ease;
 
+  .icon {
+    font-size: 6rem;
+    background-color: rgba(0,0,0,0.2);
+    padding: 1rem;
+    border: 3px solid #FFF;
+    border-radius: 6rem;
+    transition: all 280ms ease;
+  }
   &.active {
     opacity: 0.8;
   }

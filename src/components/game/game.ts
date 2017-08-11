@@ -10,25 +10,30 @@ export class GameComponent implements OnInit {
 
   @ViewChild('svg') svg: ElementRef;
 
-  private game: Game;
+  public game: Game;
+
+  public touching: boolean = false;
 
   constructor(private shapeService: ShapeService) {}
 
   ngOnInit(){
-    // const controller = new GameController;
-
     this.game = new Game(this.svg.nativeElement, this.shapeService);
     this.game.init();
-
-    window.addEventListener('keyup', (e) => {
-      if (e.keyCode === 38 && !this.game.running) {
-        this.game.start();
-      }
-    })
   }
 
-  onTap() {
-    console.log('TAPPED');
+  onTouchEnd() {
+    this.touching = false;
+
+    if (this.game.running) {
+      this.game.stopFill();
+    }
+  }
+
+  onTouchStart() {
+    this.touching = true;
+    this.game.running ?
+      this.game.startFill():
+      this.game.start();
   }
 
 }

@@ -71,7 +71,7 @@ export class Circle extends Shape {
   follow(degrees: number = 1) {
     this.degrees.fhead += degrees;
 
-    console.log(this.degrees);
+    // console.log(this.degrees);
 
     if (this.degrees.fhead > this.track[this.track.length - 1][1]) {
       this.onCompleted.emit(this);
