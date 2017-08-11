@@ -2,6 +2,7 @@
   <svg width="400" height="400" viewBox="0 0 400 400" preserveAspectRatio="xMinYMin meet" #svg></svg>
   <div id="game-status">{{ score }}</div>
   <button id="game-trigger"
+    [disabled]="ended"
     [class.active]="filling"
     (touchstart)="onTouchStart()"
     (touchend)="onTouchEnd()"

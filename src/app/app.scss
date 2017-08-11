@@ -16,7 +16,7 @@
 // automatically applied to the <body> element in the app.
 
 ion-content {
-  background: linear-gradient(160deg, $background-color, darken($background-color, 4%))!important;
+  background: linear-gradient(160deg, lighten($background-color, 8%), $background-color)!important;
 }
 ion-header {
   border-bottom: 1px solid rgba(255,255,255,0.15);

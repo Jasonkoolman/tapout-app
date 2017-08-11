@@ -15,6 +15,9 @@ export class GameComponent implements OnInit {
   /* Whether the game is running */
   public running: boolean = false;
 
+  /* Whether the game is running */
+  public ended: boolean = false;
+
   /* The total game score */
   public score: number = 0;
 
@@ -112,7 +115,7 @@ export class GameComponent implements OnInit {
     const onCompleted = this.shape.onCompleted.subscribe((shape: Shape) => {
       console.log('SHAPE COMPLETED. COVERAGE: ', shape.getCoverage());
       const coverage = shape.getCoverage();
-      this.score += coverage.covered;
+      this.score += parseFloat(coverage.percentage);
       this.results.push(coverage);
       this.next();
     });
@@ -141,6 +144,7 @@ export class GameComponent implements OnInit {
   end() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.running = false;
+    this.ended = true;
     console.log('GAME END');
   }
 
