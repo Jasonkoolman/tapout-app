@@ -1,15 +1,17 @@
 import { Shape } from './shape.model';
-import { ShapeConfig } from './shape-config.interface'
+import { ShapeConfig } from './shape-config.interface';
+import { ShapeCoverage } from './shape-coverage.interface';
 
 export class Circle extends Shape {
 
   /* The circle's current degrees */
   protected degrees = {
+    covered: 0, // total degrees covered
+    total: 0,   // total degrees of the circle
+    end: 0,     // end of the shape track
     tail: 0,    // tail of fill path
     head: 0,    // head of fill path
     fhead: 0,   // head of following path
-    total: 0,   // total degrees of the circle
-    covered: 0  // total degrees covered
   };
 
   /* The circle's track degrees */
@@ -31,6 +33,7 @@ export class Circle extends Shape {
    * Create the shape.
    */
   create() {
+    this.degrees.end = this.track[this.track.length - 1][1];
     this.elements.group = Shape.createElement('g');
     this.createTrackPath();
     this.createFollowPath();
@@ -73,7 +76,7 @@ export class Circle extends Shape {
 
     // console.log(this.degrees);
 
-    if (this.degrees.fhead > this.track[this.track.length - 1][1]) {
+    if (this.degrees.fhead > this.degrees.end) {
       this.onCompleted.emit(this);
     } else {
       this.elements.followPath.setAttributeNS(null, 'd', // update coordinates
@@ -87,8 +90,12 @@ export class Circle extends Shape {
    *
    * @returns {number}
    */
-  getCoverage(): string {
-    return (this.degrees.covered / this.degrees.total * 100).toPrecision(4);
+  getCoverage(): ShapeCoverage {
+    return {
+      total: this.degrees.total,
+      covered: this.degrees.covered,
+      percentage: (this.degrees.covered / this.degrees.total * 100).toPrecision(4)
+    }
   }
 
   /**

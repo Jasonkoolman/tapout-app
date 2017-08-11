@@ -1,5 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { ShapeConfig } from './shape-config.interface';
+import { ShapeCoverage } from './shape-coverage.interface';
 
 export abstract class Shape {
 
@@ -52,11 +53,11 @@ export abstract class Shape {
   public abstract follow(degrees?: number);
 
   /**
-   * Get the shape's coverage percentage.
+   * Get the shape's coverage.
    *
-   * @returns {boolean}
+   * @returns {ShapeCoverage}
    */
-  public abstract getCoverage(): string;
+  public abstract getCoverage(): ShapeCoverage;
 
   /**
    * Check whether the filled shape is off track.
