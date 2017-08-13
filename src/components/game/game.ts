@@ -50,23 +50,9 @@ export class GameComponent implements OnInit {
    * Initialize the game.
    */
   ngOnInit() {
-    const shapes = ShapeService.generate(this.svg.nativeElement, 5, 0);
+    const shapes = ShapeService.generate(this.svg.nativeElement, 4, 0);
     this.shapeService.add(shapes);
     this.shape = this.shapeService.active();
-
-    function getRandomInt(min: number, max: number) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const gutters = 4;
-    let part = 350/gutters;
-
-    for (let i = 1; i < gutters+1; i++) {
-      let int = getRandomInt((i-1)*part, i*part);
-      console.log('INT ', int);
-      // TODO: Create random gutters
-
-    }
   }
 
   /**

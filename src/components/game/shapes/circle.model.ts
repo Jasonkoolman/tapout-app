@@ -15,9 +15,7 @@ export class Circle extends Shape {
   };
 
   /* The circle's track degrees */
-  protected track: Array<[number, number]> = [
-    [0, 350]
-  ];
+  protected track: Array<[number, number]>;
 
   /**
    * @constructor
@@ -33,6 +31,7 @@ export class Circle extends Shape {
    * Create the shape.
    */
   create() {
+    this.getTrack();
     this.degrees.end = this.track[this.track.length - 1][1];
     this.elements.group = Shape.createElement('g');
     this.createTrackPath();
@@ -113,6 +112,28 @@ export class Circle extends Shape {
     });
 
     return result;
+  }
+
+  /**
+   * Get the track of the circle.
+   */
+  private getTrack() {
+    function getRandomInt(min: number, max: number) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const gutters = 4;
+
+    let angle = 340/gutters,
+        track = [];
+
+    for (let i = 0; i < gutters; i++) {
+      const point = (i+1)*angle*getRandomInt(0.9, 1.1);
+      track.push([i*angle, point]);
+    }
+
+    this.track = track;
+    console.log(track);
   }
 
   /**
