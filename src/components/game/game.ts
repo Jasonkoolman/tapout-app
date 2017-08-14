@@ -50,7 +50,7 @@ export class GameComponent implements OnInit {
    * Initialize the game.
    */
   ngOnInit() {
-    const shapes = ShapeService.generate(this.svg.nativeElement, 4, 0);
+    const shapes = ShapeService.generate(this.svg.nativeElement, 2, 2);
     this.shapeService.add(shapes);
     this.shape = this.shapeService.active();
   }

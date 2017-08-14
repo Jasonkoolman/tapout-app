@@ -85,15 +85,15 @@ export class ShapeService {
         x: center.x,
         y: center.y,
         size: 10 - (complexity * 0.5),
-        radius: 40 + (30 * i),
+        radius: 40 + (25 * i),
         gutters: complexity,
-        fillColor: 'red',
+        fillColor: '#A3D900',
         trackColor: 'rgba(255,255,255,0.2)',
         followColor: 'rgba(22,29,53,0.2)',
       });
 
-      shapes.push(circle);
       circle.create();
+      shapes.push(circle);
     }
 
     return shapes;

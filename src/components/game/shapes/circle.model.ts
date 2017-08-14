@@ -31,9 +31,7 @@ export class Circle extends Shape {
    * Create the shape.
    */
   create() {
-    this.getTrack();
-    this.degrees.end = this.track[this.track.length - 1][1];
-    this.elements.group = Shape.createElement('g');
+    this.setTrack();
     this.createTrackPath();
     this.createFollowPath();
     this.createFillPath();
@@ -115,38 +113,38 @@ export class Circle extends Shape {
   }
 
   /**
-   * Get the track of the circle.
+   * Set the track of the circle.
    */
-  private getTrack() {
-    function getRandomInt(min: number, max: number) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const gutters = 4;
-
-    let angle = 340/gutters,
-        track = [];
+  private setTrack() {
+    const gutters = this.config.gutters || 1,
+          angle = 350/gutters,
+          size = 20,
+          track = [];
 
     for (let i = 0; i < gutters; i++) {
-      const point = (i+1)*angle*getRandomInt(0.9, 1.1);
-      track.push([i*angle, point]);
+      const start = i*angle,
+            end = (i+1)*angle-size;
+
+      this.degrees.total += end - start; // add up difference to total degrees
+
+      track.push([start, end]);
     }
 
+    this.degrees.end = track[track.length - 1][1];
     this.track = track;
-    console.log(track);
   }
 
   /**
    * Create the track path.
    */
   private createTrackPath() {
+    this.elements.group = Shape.createElement('g');
     this.track.forEach((degrees) => {
       const path = Shape.createElement('path', {
         d: this.getAnnularCoordinates(degrees[0], degrees[1]),
         fill: this.config.trackColor
       });
 
-      this.degrees.total += degrees[1] - degrees[0]; // add up difference to total degrees
       this.elements.group.appendChild(path); // append to group
     });
   }
