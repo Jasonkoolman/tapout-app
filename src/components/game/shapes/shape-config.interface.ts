@@ -15,13 +15,14 @@ export interface ShapeConfig {
   /* Total shape gutters */
   gutters: number;
 
-  /* Color of the shape's fill path */
-  fillColor: string;
+  /* Maximum (rotation) offset */
+  offset: number;
 
-  /* Color of the shape's track path */
-  trackColor: string;
-
-  /* Color of the shape's follow path */
-  followColor: string;
+  /* The shape's path colors */
+  colors: {
+    trackPath: string,
+    fillPath: string,
+    followPath: string,
+  }
 
 }

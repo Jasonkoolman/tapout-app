@@ -84,12 +84,15 @@ export class ShapeService {
       const circle = new Circle(svg, {
         x: center.x,
         y: center.y,
-        size: 10 - (complexity * 0.5),
-        radius: 40 + (25 * i),
+        size: 12 - (complexity * 0.5),
+        radius: 60 + (40 * i),
+        offset: 20,
         gutters: complexity,
-        fillColor: '#A3D900',
-        trackColor: 'rgba(255,255,255,0.2)',
-        followColor: 'rgba(22,29,53,0.2)',
+        colors: {
+          trackPath: 'rgba(255,255,255,0.2)',
+          fillPath: '#A3D900',
+          followPath: 'rgba(22,29,53,0.2)',
+        }
       });
 
       circle.create();

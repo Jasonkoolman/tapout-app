@@ -130,6 +130,7 @@ export class Circle extends Shape {
       track.push([start, end]);
     }
 
+    this.elements.group.setAttributeNS(null, 'style', 'transform: rotate(-' + this.config.offset * Math.random() + 'deg)');
     this.degrees.end = track[track.length - 1][1];
     this.track = track;
   }
@@ -142,7 +143,7 @@ export class Circle extends Shape {
     this.track.forEach((degrees) => {
       const path = Shape.createElement('path', {
         d: this.getAnnularCoordinates(degrees[0], degrees[1]),
-        fill: this.config.trackColor
+        fill: this.config.colors.trackPath
       });
 
       this.elements.group.appendChild(path); // append to group
@@ -155,7 +156,7 @@ export class Circle extends Shape {
   private createFollowPath() {
     const path = Shape.createElement('path', {
       d: this.getAnnularCoordinates(this.degrees.tail, this.degrees.head),
-      fill: this.config.followColor
+      fill: this.config.colors.followPath
     });
 
     this.elements.followPath = path; // store new path
@@ -168,7 +169,7 @@ export class Circle extends Shape {
   private createFillPath() {
     const path = Shape.createElement('path', {
       d: this.getAnnularCoordinates(this.degrees.tail, this.degrees.head),
-      fill: this.config.fillColor
+      fill: this.config.colors.fillPath
     });
 
     this.elements.fillPath = path; // store new path

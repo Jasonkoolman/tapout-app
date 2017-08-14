@@ -1,6 +1,8 @@
-<div id="game-wrap">
-  <svg width="400" height="400" viewBox="0 0 400 400" preserveAspectRatio="xMinYMin meet" #svg></svg>
-  <div id="game-status">{{ score }}</div>
+<div id="game">
+  <div id="game-wrap">
+    <svg width="400" height="400" viewBox="0 0 400 400" preserveAspectRatio="xMinYMin meet" #svg></svg>
+    <div id="game-status">{{ shapeScore }} <strong>{{ score }}</strong></div>
+  </div>
   <button id="game-trigger"
     [disabled]="ended"
     [class.active]="filling"

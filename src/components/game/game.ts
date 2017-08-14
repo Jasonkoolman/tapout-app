@@ -21,6 +21,9 @@ export class GameComponent implements OnInit {
   /* The total game score */
   public score: number = 0;
 
+  /* The score for the current shape */
+  public shapeScore: number = 0;
+
   /* Number of frames per second */
   private fps: number = 60;
 
@@ -92,6 +95,7 @@ export class GameComponent implements OnInit {
   loop(): number {
     const draw = () => {
       if (this.filling) {
+        this.shapeScore++;
         this.shape.fill();
       }
       this.shape.follow();
@@ -115,7 +119,7 @@ export class GameComponent implements OnInit {
     const onCompleted = this.shape.onCompleted.subscribe((shape: Shape) => {
       console.log('SHAPE COMPLETED. COVERAGE: ', shape.getCoverage());
       const coverage = shape.getCoverage();
-      this.score += parseFloat(coverage.percentage);
+      this.score += coverage.covered;
       this.results.push(coverage);
       this.next();
     });
@@ -128,6 +132,7 @@ export class GameComponent implements OnInit {
    */
   next() {
     clearInterval(this.interval);
+    this.shapeScore = 0;
 
     if (this.shapeService.assign()) {
       this.shape = this.shapeService.active();
