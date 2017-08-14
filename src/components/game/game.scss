@@ -13,11 +13,19 @@
 
     > g {
       transform-origin: 200px 200px;
-      transition: all 800ms ease-in-out;
+      transition: all 600ms ease-in-out;
 
+      &.completed {
+        transform: rotate(45deg);
+        opacity: 0.5;
+      }
       &.collision {
-        transform: rotate(360deg);
-        opacity: 0;
+        transform: rotate(45deg);
+
+        .fill {
+          transition: all 300ms ease;
+          opacity: 0;
+        }
       }
     }
   }
@@ -48,5 +56,17 @@
   }
   &.active {
     opacity: 0.8;
+  }
+}
+
+#game-score {
+  margin-top: 2rem;
+  font-size: 2.5rem;
+  transition: all 280ms ease-in-out;
+
+  &.changed {
+    transform: scale(1.5);
+    filter: blur(1px);
+    transition: all 280ms ease;
   }
 }

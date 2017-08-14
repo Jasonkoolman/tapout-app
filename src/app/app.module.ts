@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { App } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ComponentsModule} from '../components/components.module';
+import { ComponentsModule } from '../components/components.module';
 import { ShapeService } from "../components/game/shapes/shape.service"
 
 @NgModule({

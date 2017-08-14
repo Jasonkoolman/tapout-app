@@ -15,8 +15,8 @@ export interface ShapeConfig {
   /* Total shape gutters */
   gutters: number;
 
-  /* Maximum (rotation) offset */
-  offset: number;
+  /* Maximum shape rotation */
+  rotate: number;
 
   /* The shape's path colors */
   colors: {

@@ -130,7 +130,6 @@ export class Circle extends Shape {
       track.push([start, end]);
     }
 
-    this.elements.group.setAttributeNS(null, 'style', 'transform: rotate(-' + this.config.offset * Math.random() + 'deg)');
     this.degrees.end = track[track.length - 1][1];
     this.track = track;
   }
@@ -148,6 +147,8 @@ export class Circle extends Shape {
 
       this.elements.group.appendChild(path); // append to group
     });
+
+    this.elements.group.setAttributeNS(null, 'transform', 'rotate(-' + this.config.rotate * Math.random() + ')');
   }
 
   /**
@@ -169,7 +170,8 @@ export class Circle extends Shape {
   private createFillPath() {
     const path = Shape.createElement('path', {
       d: this.getAnnularCoordinates(this.degrees.tail, this.degrees.head),
-      fill: this.config.colors.fillPath
+      fill: this.config.colors.fillPath,
+      class: 'fill'
     });
 
     this.elements.fillPath = path; // store new path

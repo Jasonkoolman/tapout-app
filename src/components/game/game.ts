@@ -3,6 +3,7 @@ import { Shape } from './shapes/shape.model'
 import { ShapeService } from "./shapes/shape.service"
 import { ShapeCoverage } from './shapes/shape-coverage.interface';
 import { Subscriber } from 'rxjs/Subscriber'
+import * as CountUp from 'countup.js/dist/countUp';
 
 @Component({
   selector: 'app-game',
@@ -20,6 +21,9 @@ export class GameComponent implements OnInit {
 
   /* The total game score */
   public score: number = 0;
+
+  /* The game score counter */
+  private counter: CountUp;
 
   /* The score for the current shape */
   public shapeScore: number = 0;
@@ -53,9 +57,11 @@ export class GameComponent implements OnInit {
    * Initialize the game.
    */
   ngOnInit() {
-    const shapes = ShapeService.generate(this.svg.nativeElement, 2, 2);
+    const shapes = ShapeService.generate(this.svg.nativeElement, 3, 3);
     this.shapeService.add(shapes);
     this.shape = this.shapeService.active();
+    this.counter = new CountUp('game-score', 0, 0, 0, 1);
+    this.counter.start();
   }
 
   /**
@@ -118,8 +124,13 @@ export class GameComponent implements OnInit {
 
     const onCompleted = this.shape.onCompleted.subscribe((shape: Shape) => {
       console.log('SHAPE COMPLETED. COVERAGE: ', shape.getCoverage());
+      shape.elements.group.setAttributeNS(null, 'class', 'completed');
+      console.log('SETTING ATTR');
       const coverage = shape.getCoverage();
-      this.score += coverage.covered;
+      this.score += coverage.covered*5;
+      this.counter.update(this.score);
+      this.counter.d.classList.add('changed');
+      setTimeout(() => this.counter.d.classList.remove('changed'), 280);
       this.results.push(coverage);
       this.next();
     });

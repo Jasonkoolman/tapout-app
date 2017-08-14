@@ -86,7 +86,7 @@ export class ShapeService {
         y: center.y,
         size: 12 - (complexity * 0.5),
         radius: 60 + (40 * i),
-        offset: 20,
+        rotate: 45,
         gutters: complexity,
         colors: {
           trackPath: 'rgba(255,255,255,0.2)',
