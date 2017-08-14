@@ -29,7 +29,7 @@ export class GameComponent implements OnInit {
   public shapeScore: number = 0;
 
   /* Number of frames per second */
-  private fps: number = 60;
+  private fps: number = 50;
 
   /* Interval timer */
   private interval: number;
@@ -145,8 +145,8 @@ export class GameComponent implements OnInit {
 
     if (this.shapeService.assign()) {
       this.shape = this.shapeService.active();
-      this.interval = this.loop();
       this.subscribe();
+      this.interval = this.loop();
     } else {
       this.end();
     }

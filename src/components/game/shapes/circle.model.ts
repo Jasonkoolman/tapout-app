@@ -142,7 +142,8 @@ export class Circle extends Shape {
     this.track.forEach((degrees) => {
       const path = Shape.createElement('path', {
         d: this.getAnnularCoordinates(degrees[0], degrees[1]),
-        fill: this.config.colors.trackPath
+        fill: this.config.colors.trackPath,
+        class: 'track'
       });
 
       this.elements.group.appendChild(path); // append to group

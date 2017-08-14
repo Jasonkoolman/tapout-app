@@ -58,6 +58,7 @@ export class ShapeService {
 
     if (this.shapes[index] !== undefined) {
       this.activeShapeIndex = index;
+      this.shapes[index].elements.group.setAttributeNS(null, 'class', 'active');
       return true;
     }
 

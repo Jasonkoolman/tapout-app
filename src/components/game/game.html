@@ -1,8 +1,21 @@
 <div id="game">
-  <div id="game-score">{{ score }}</div>
+  <div id="game-score2">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <p><small>SCORE</small></p>
+          {{ score }}
+        </ion-col>
+        <ion-col>
+          <p><small>COVERED</small></p>
+          {{ score }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
   <div id="game-wrap">
     <svg width="400" height="400" viewBox="0 0 400 400" preserveAspectRatio="xMinYMin meet" #svg></svg>
-    <div id="game-status">.</div>
+    <div id="game-status"></div>
   </div>
   <button id="game-trigger"
     [disabled]="ended"
