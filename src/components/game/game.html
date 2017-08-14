@@ -1,7 +1,8 @@
 <div id="game">
+  <div id="game-score">{{ score }}</div>
   <div id="game-wrap">
     <svg width="400" height="400" viewBox="0 0 400 400" preserveAspectRatio="xMinYMin meet" #svg></svg>
-    <div id="game-status">{{ shapeScore }}</div>
+    <div id="game-status">.</div>
   </div>
   <button id="game-trigger"
     [disabled]="ended"
@@ -12,5 +13,4 @@
     (mouseup)="onTouchEnd()">
     <ion-icon name="finger-print"></ion-icon>
   </button>
-  <div id="game-score">{{ score }}</div>
 </div>

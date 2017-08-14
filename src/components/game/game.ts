@@ -117,18 +117,16 @@ export class GameComponent implements OnInit {
    */
   subscribe() {
     const onCollision = this.shape.onCollision.subscribe((shape: Shape) => {
-      console.log('SHAPE COLLISION.');
       shape.elements.group.setAttributeNS(null, 'class', 'collision');
       this.next();
     });
 
     const onCompleted = this.shape.onCompleted.subscribe((shape: Shape) => {
-      console.log('SHAPE COMPLETED. COVERAGE: ', shape.getCoverage());
       shape.elements.group.setAttributeNS(null, 'class', 'completed');
-      console.log('SETTING ATTR');
+
       const coverage = shape.getCoverage();
-      this.score += coverage.covered*5;
-      this.counter.update(this.score);
+      // this.score += coverage.covered*5;
+      this.counter.update(this.shapeScore);
       this.counter.d.classList.add('changed');
       setTimeout(() => this.counter.d.classList.remove('changed'), 280);
       this.results.push(coverage);
