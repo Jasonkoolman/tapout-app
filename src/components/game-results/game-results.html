@@ -1,0 +1,6 @@
+<div *ngFor="let result of results">
+  {{result.covered}}/{{ result.total }} ({{result.percentage}})
+</div>
+
+<button ion-button (tap)="retry()">Retry</button>
+<button ion-button (tap)="this.onProceed.emit(true)">Proceed</button>

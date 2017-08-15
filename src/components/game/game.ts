@@ -29,7 +29,7 @@ export class GameComponent implements OnInit {
   public shapeScore: number = 0;
 
   /* Number of frames per second */
-  private fps: number = 50;
+  private fps: number = 60;
 
   /* Interval timer */
   private interval: number;
@@ -51,17 +51,23 @@ export class GameComponent implements OnInit {
    *
    * @param {ShapeService} shapeService
    */
-  constructor(private shapeService: ShapeService) {}
+  constructor(private shapeService: ShapeService) {
+    console.log('GAME CONSTRUCT');
+
+  }
 
   /**
    * Initialize the game.
    */
   ngOnInit() {
-    const shapes = ShapeService.generate(this.svg.nativeElement, 3, 3);
+    console.log('GAME INIT');
+    const shapes = ShapeService.generate(this.svg.nativeElement, 1, 3);
     this.shapeService.add(shapes);
     this.shape = this.shapeService.active();
-    this.counter = new CountUp('game-score', 0, 0, 0, 1);
-    this.counter.start();
+    // this.counter = new CountUp('game-score', 0, 0, 0, 1);
+    // this.counter.start();
+
+    console.log(this.ended, this.subscriptions, this.results);
   }
 
   /**
@@ -126,9 +132,9 @@ export class GameComponent implements OnInit {
 
       const coverage = shape.getCoverage();
       // this.score += coverage.covered*5;
-      this.counter.update(this.shapeScore);
-      this.counter.d.classList.add('changed');
-      setTimeout(() => this.counter.d.classList.remove('changed'), 280);
+      // this.counter.update(this.shapeScore);
+      // this.counter.d.classList.add('changed');
+      // setTimeout(() => this.counter.d.classList.remove('changed'), 280);
       this.results.push(coverage);
       this.next();
     });

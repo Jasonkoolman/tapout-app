@@ -1,5 +1,5 @@
 <div id="game">
-  <div id="game-score2">
+  <div id="game-score">
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -27,3 +27,5 @@
     <ion-icon name="finger-print"></ion-icon>
   </button>
 </div>
+
+<game-results [class.active]="ended" [results]="results"></game-results>

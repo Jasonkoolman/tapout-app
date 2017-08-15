@@ -47,6 +47,14 @@ export class ShapeService {
   }
 
   /**
+   * Clear all shapes.
+   */
+  clear() {
+    this.shapes.forEach((shape: Shape) => shape.elements.group.remove());
+    this.shapes = [];
+  }
+
+  /**
    * Set the next active shape by incrementing the index.
    *
    * @param {boolean} random

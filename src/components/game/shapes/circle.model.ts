@@ -91,7 +91,7 @@ export class Circle extends Shape {
     return {
       total: this.degrees.total,
       covered: this.degrees.covered,
-      percentage: (this.degrees.covered / this.degrees.total * 100).toPrecision(4)
+      percentage: (this.degrees.covered / this.degrees.total * 100).toFixed(2)
     }
   }
 

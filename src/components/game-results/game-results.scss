@@ -1,0 +1,15 @@
+game-results {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  transform: translateY(100%);
+  transition: transform 600ms ease 600ms;
+  background: linear-gradient(160deg, lighten($background-color, 8%), $background-color)!important;
+
+  &.active {
+    transform: translateY(0);
+  }
+}
